@@ -14,7 +14,7 @@ var html = template.Must(template.New("https").Parse(`
   <script src="/assets/app.js"></script>
 </head>
 <body>
-  <h1 style="color:red;">Welcome, Ginner!</h1>
+  <h1 style="color:red;">Welcome, {{ .nome }}!</h1>
 </body>
 </html>
 `))
@@ -32,6 +32,24 @@ func posting (c *gin.Context) {
 	})
 }
 
+type StructA struct {
+	FieldA string `form:"field_a"`
+}
+
+type StructB struct {
+	NestedStruct StructA
+	FieldB string `form:"field_b"`
+}
+
+func GetData(c *gin.Context) {
+	var b StructB
+	c.Bind(&b)
+	c.JSON(200, gin.H{
+		"a": b.NestedStruct,
+		"b": b.FieldB,
+	})
+}
+
 func main() {
 
 	// Force log's color
@@ -45,6 +63,8 @@ func main() {
 	r.Static("/assets", "./assets")
 	r.SetHTMLTemplate(html)
 
+	r.GET("/get", GetData)
+
 	r.GET("/", func(c *gin.Context) {
 		if pusher := c.Writer.Pusher(); pusher != nil {
 			// use pusher.Push() to do server push
@@ -52,6 +72,7 @@ func main() {
 				log.Printf("Failed to push: %v", err)
 			}
 		}
+
 		c.HTML(200, "https", gin.H{
 			"status": "success",
 		})
