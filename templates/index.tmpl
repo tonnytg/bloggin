@@ -87,6 +87,14 @@
       <article>
         <h1>{{ .Article }}</h1>
         <p>{{ .Text }}</p>
+
+          <form action="/post" method="post" id="id">
+              <label for="name">Name:</label><br>
+              <input type="text" id="name" name="name" value="Type your name"><br>
+              <label for="message">Message:</label><br>
+              <input type="text" id="message" name="message" value="Type some text..."><br><br>
+              <input type="submit" value="Submit">
+          </form>
       </article>
     </section>
 

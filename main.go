@@ -69,12 +69,10 @@ func main() {
 
 	r.POST("/post", func(c *gin.Context) {
 
-		id := c.Query("id")
-		page := c.DefaultQuery("page", "0")
 		name := c.PostForm("name")
 		message := c.PostForm("message")
 
-		fmt.Printf("id: %s; page: %s; name: %s; message: %s", id, page, name, message)
+		fmt.Printf("name: %s; message: %s", name, message)
 	})
 
 	r.POST("/somePost", posting)
