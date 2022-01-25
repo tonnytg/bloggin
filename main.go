@@ -6,19 +6,6 @@ import (
 	"net/http"
 )
 
-func posting (c *gin.Context) {
-	var msg string
-	if c.Request.Method == http.MethodPost {
-		msg = "Post"
-	} else {
-		// never enter here because filter only POST
-		msg = "Get"
-	}
-	c.JSON(200, gin.H{
-		"method": msg,
-	})
-}
-
 type StructA struct {
 	FieldA string `form:"field_a"`
 }
@@ -52,42 +39,65 @@ func main() {
 	// API return getData
 	r.GET("/get", GetData)
 
-	r.GET("/demo", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "demo.tmpl", gin.H{
-			"Title": "Users",
-		})
-	})
+	r.GET("/demo", demoHandler)
 
-	r.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.tmpl", gin.H{
-			"Title": "Posts",
-			"Article": "This is a post",
-			"Text": "Content about your article...",
-			"Menu": []string{"Home", "About", "Contact"},
-		})
-	})
+	r.GET("/", rootHandler)
 
-	r.POST("/post", func(c *gin.Context) {
-
-		name := c.PostForm("name")
-		message := c.PostForm("message")
-
-		fmt.Printf("name: %s; message: %s", name, message)
-	})
+	r.POST("/post", postHandler)
 
 	r.POST("/somePost", posting)
 
-	r.GET("/user/:name/*action", func(c *gin.Context) {
-		name := c.Param("name")
-		action := c.Param("action")
-		message := name + " is " + action
-		c.String(http.StatusOK, message)
-	})
+	r.GET("/user/:name/*action", userHandler)
 
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
+	r.GET("/ping", pingHandler)
 	r.Run(":8080") // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+}
+
+func rootHandler(c *gin.Context) {
+	c.HTML(http.StatusOK, "index.tmpl", gin.H{
+		"Title": "Posts",
+		"Article": "This is a post",
+		"Text": "Content about your article...",
+		"Menu": []string{"Home", "About", "Contact"},
+	})
+}
+
+func postHandler (c *gin.Context) {
+
+	name := c.PostForm("name")
+	message := c.PostForm("message")
+
+	fmt.Printf("name: %s; message: %s", name, message)
+}
+
+func posting (c *gin.Context) {
+	var msg string
+	if c.Request.Method == http.MethodPost {
+		msg = "Post"
+	} else {
+		// never enter here because filter only POST
+		msg = "Get"
+	}
+	c.JSON(200, gin.H{
+		"method": msg,
+	})
+}
+
+func userHandler(c *gin.Context) {
+	name := c.Param("name")
+	action := c.Param("action")
+	message := name + " is " + action
+	c.String(http.StatusOK, message)
+}
+
+func pingHandler(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"message": "pong",
+	})
+}
+
+func demoHandler(c *gin.Context) {
+	c.HTML(http.StatusOK, "demo.tmpl", gin.H{
+		"Title": "Users",
+	})
 }
