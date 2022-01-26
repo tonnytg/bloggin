@@ -24,6 +24,15 @@ func GetData(c *gin.Context) {
 	})
 }
 
+func GetPosts(c *gin.Context) {
+	var b StructB
+	c.Bind(&b)
+	c.JSON(200, gin.H{
+		"Title": "First Post",
+		"Body":  "Hello World!",
+	})
+}
+
 func main() {
 
 	// Force log's color
@@ -39,11 +48,13 @@ func main() {
 	// API return getData
 	r.GET("/get", GetData)
 
+	r.GET("/posts", GetPosts)
+
 	r.GET("/demo", demoHandler)
 
 	r.GET("/", rootHandler)
 
-	r.POST("/post", postHandler)
+	r.POST("/admin/post", postHandler)
 
 	r.POST("/somePost", posting)
 
