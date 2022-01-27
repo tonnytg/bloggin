@@ -1,8 +1,11 @@
 package main
 
-import webserver "bloggin/pkg/web"
+import (
+	"bloggin/pkg/logger"
+	webserver "bloggin/pkg/web"
+)
 
 func main() {
-	println("Start WebServer")
+	logger.Msg("INFO","Starting server...")
 	webserver.StartServer()
 }
