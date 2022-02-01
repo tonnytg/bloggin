@@ -2,7 +2,8 @@
 package handlers
 
 import (
-	"fmt"
+	"bloggin/entity/post"
+	"bloggin/pkg/database"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -17,11 +18,20 @@ type StructB struct {
 }
 
 func RootHandler(c *gin.Context) {
+
+	articles := database.GetAllArticles()
+
 	c.HTML(http.StatusOK, "index.tmpl", gin.H{
-		"Title":   "Posts",
-		"Article": "This is a post",
-		"Text":    "Content about your article...",
-		"Menu":    []string{"Home", "About", "Contact"},
+		"Title":    articles[0].Title,
+		"Text":     articles[0].Text,
+		"Menu":     []string{"Home", "About", "Contact"},
+		"Articles": articles,
+	})
+}
+
+func AdminHandler(c *gin.Context) {
+	c.HTML(http.StatusOK, "admin.tmpl", gin.H{
+		"Title": "admin",
 	})
 }
 
@@ -30,7 +40,14 @@ func PostHandler(c *gin.Context) {
 	name := c.PostForm("name")
 	message := c.PostForm("message")
 
-	fmt.Printf("name: %s; message: %s", name, message)
+	article := post.Post{
+		Title: name,
+		Text:  message,
+	}
+
+	database.SavePost(&article)
+
+	c.HTML(http.StatusOK, "index.tmpl", gin.H{})
 }
 
 func Posting(c *gin.Context) {

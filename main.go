@@ -17,8 +17,7 @@ func main() {
 	// Check cmd
 	cmd.Flags()
 
-	logger.Msg("INFO", "Starting server...")
-
 	// Start Web server GIN
+	logger.Msg("INFO", "Starting server...")
 	webserver.StartServer()
 }
