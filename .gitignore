@@ -1,9 +1,16 @@
+.idea
+*idea*
+
 # Binaries for programs and plugins
 *.exe
 *.exe~
 *.dll
 *.so
 *.dylib
+*.conf
+*.env
+conf.json
+*.json
 
 # Test binary, built with `go test -c`
 *.test
