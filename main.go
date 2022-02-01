@@ -7,7 +7,7 @@ import (
 	webserver "bloggin/pkg/web"
 )
 
-func Init() {
+func init() {
 	// Database init
 	database.InitDatabase()
 }
