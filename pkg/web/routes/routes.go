@@ -18,6 +18,7 @@ func Routes(r *gin.Engine) {
 	// API
 	r.GET("/get", handlers.GetData)
 	r.GET("/posts", handlers.GetPosts)
+	r.DELETE("/posts", handlers.DeletePosts)
 	r.GET("/demo", handlers.DemoHandler)
 	r.POST("/admin/post", handlers.PostHandler)
 	r.POST("/somePost", handlers.Posting)

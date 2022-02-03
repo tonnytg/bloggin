@@ -99,3 +99,12 @@ func GetPosts(c *gin.Context) {
 		"Body":  "Hello World!",
 	})
 }
+
+func DeletePosts(c *gin.Context) {
+
+	q := c.Query("id")
+
+	database.DeletePost(q)
+
+	c.JSON(http.StatusOK, gin.H{"message": "Deleted"})
+}

@@ -46,6 +46,14 @@ func SavePost(p *post.Post) {
 	fmt.Println(result.RowsAffected)
 }
 
+func DeletePost(id string) {
+
+	var post models.Post
+	db := InitDatabase()
+
+	db.Where("id = ?", id).Delete(&post)
+}
+
 func GetAllArticles() []models.Post {
 	db := InitDatabase()
 	var posts []models.Post

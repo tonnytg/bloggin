@@ -87,7 +87,7 @@
         <ul>
         <p>Articles:</p>
           {{ range .Articles }}
-          <li><a href="localhost:8080/post/id?{{ .ID }}">{{ .Text }}</a></li>
+          <li><a href="localhost:8080/post?id={{ .ID }}" onclick="delete_post({{ .ID }});">{{ .Text }}</a></li>
           {{ end }}
         </ul>
 
@@ -102,6 +102,20 @@
     <footer>
       <p>Footer</p>
     </footer>
+
+    <script>
+        function delete_post(id)
+        {
+            alert('deleting post' + id);
+            fetch('/posts?id=' + id, {
+                method: 'DELETE',
+            })
+                .then(res => res.text()) // or res.json()
+                .then(res => console.log(res))
+            // Do something;
+            window.location.reload()
+        }
+    </script>
 
     </body>
     </html>
