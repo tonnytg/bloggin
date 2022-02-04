@@ -47,6 +47,8 @@ func PostHandler(c *gin.Context) {
 	}
 
 	database.SavePost(&article)
+	c.JSON(http.StatusOK, gin.H{"message": "ok"})
+
 	location := url.URL{Path: "/",}
 	c.Redirect(http.StatusFound, location.RequestURI())
 
