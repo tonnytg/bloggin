@@ -6,6 +6,7 @@ import (
 	"bloggin/pkg/database"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"net/url"
 )
 
 type StructA struct {
@@ -46,8 +47,10 @@ func PostHandler(c *gin.Context) {
 	}
 
 	database.SavePost(&article)
+	location := url.URL{Path: "/",}
+	c.Redirect(http.StatusFound, location.RequestURI())
 
-	c.HTML(http.StatusOK, "index.tmpl", gin.H{})
+	//c.HTML(http.StatusOK, "index.tmpl", gin.H{})
 }
 
 func Posting(c *gin.Context) {
