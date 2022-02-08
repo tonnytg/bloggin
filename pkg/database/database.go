@@ -58,5 +58,8 @@ func GetAllArticles() []models.Post {
 	db := InitDatabase()
 	var posts []models.Post
 	db.Find(&posts)
+	if len(posts) == 0 {
+		return nil
+	}
 	return posts
 }

@@ -22,6 +22,15 @@ func RootHandler(c *gin.Context) {
 
 	articles := database.GetAllArticles()
 
+	if articles == nil {
+		c.HTML(http.StatusOK, "index.tmpl", gin.H{
+			"Title":    "Empty",
+			"Text":     "Empty",
+			"Menu":     []string{"Home", "About", "Contact"},
+			"Articles": articles,
+		})
+	}
+
 	c.HTML(http.StatusOK, "index.tmpl", gin.H{
 		"Title":    articles[0].Title,
 		"Text":     articles[0].Text,
