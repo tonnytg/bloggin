@@ -1,127 +1,166 @@
 {{ define "index.tmpl" }}
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <title>CSS Template</title>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-      <style>
-        * {
-          box-sizing: border-box;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>CSS Template</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+
+        html {
+            font-family: Arial;
+            font-size: 16px;
+            box-sizing: border-box;
+            background-color: #f1f1f1;
         }
 
         body {
-          font-family: Arial, Helvetica, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
         /* Style the header */
         header {
-          background-color: #666;
-          padding: 30px;
-          text-align: center;
-          font-size: 35px;
-          color: white;
+            background-color: #666;
+            padding: 30px;
+            text-align: center;
+            font-size: 35px;
+            color: white;
         }
 
         /* Create two columns/boxes that floats next to each other */
         nav {
-          float: left;
-          width: 30%;
-          height: 300px; /* only for demonstration, should be removed */
-          background: #ccc;
-          padding: 20px;
+            float: left;
+            width: 20%;
+            background: #ccc;
+            padding: 20px;
+            list-style-type: none;
+            color:white;
+            border-style: double;
         }
 
         /* Style the list inside the menu */
         nav ul {
-          list-style-type: none;
-          padding: 0;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            /*width: 100%;*/
+            height: 100%;
         }
 
         article {
-          float: left;
-          padding: 20px;
-          width: 70%;
-          background-color: #f1f1f1;
-          height: 300px; /* only for demonstration, should be removed */
+            float: left;
+            padding: 20px;
+            width: 80%;
+            background-color: #f1f1f1;
+            /*height: auto; !* only for demonstration, should be removed *!*/
+        }
+
+        p {
+            text-transform: uppercase;
+            font-size: 1em;
+            letter-spacing: 0.1em;
+            color: #343131;
+            font-weight: bold;
+            margin-top: 20px;
         }
 
         /* Clear floats after the columns */
         section::after {
-          content: "";
-          display: table;
-          clear: both;
+            /*content: "";*/
+            /*display: table;*/
+            /*clear: both;*/
         }
 
         /* Style the footer */
         footer {
-          background-color: #777;
-          padding: 10px;
-          text-align: center;
-          color: white;
+            background-color: #777;
+            padding: 10px;
+            text-align: center;
+            color: white;
         }
 
-        /* Responsive layout - makes the two columns/boxes stack on top of each other instead of next to each other, on small screens */
-        @media (max-width: 600px) {
-          nav, article {
-            width: 100%;
-            height: auto;
-          }
-        }
-      </style>
-    </head>
-    <body>
-    <header>
-      <h2>{{ .Title }}</h2>
-    </header>
+    </style>
+</head>
+<body>
+<header>
+    <h2>{{ .Title }}</h2>
+</header>
 
-    <section>
-      <nav>
-        <ul>
-            <p>Menu</p>
-          {{ range .Menu }}
-            <li><a href="{{ . }}">{{ . }}</a></li>
-          {{ end }}
-        </ul>
-        <hr>
-        <ul>
-        <p>Articles:</p>
-          {{ range .Articles }}
-          <li><a href="#{{ .ID }}" onclick="">{{ .Text }}</a>
-              <a href="#{{ .ID }}" onclick="delete_post({{ .ID }});"><i class="fa fa-trash-o" style="font-size:16px"></i></a>
-          </li>
-          {{ end }}
-        </ul>
+<section>
+    <nav>
+        <div class="menu">
+            <ul>
+                <p>Menu</p>
+                {{ range .Menu }}
+                <li><a href="{{ . }}">{{ . }}</a></li>
+                {{ end }}
+            </ul>
+            <hr>
+            <ul>
+                <p>Articles:</p>
+                {{ range .Articles }}
+                <li><a href="#{{ .ID }}" onclick="">{{ .Text }}</a>
+                    <a href="#{{ .ID }}" onclick="delete_post({{ .ID }});"><i class="fa fa-trash-o"
+                                                                              style="font-size:16px"></i></a>
+                </li>
+                {{ end }}
+            </ul>
+        </div>
+    </nav>
 
-      </nav>
-
-      <article>
+    <article>
         <p>{{ .Text }}</p>
-      </article>
 
-    </section>
+        What is Lorem Ipsum?<br/>
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br/><br/><br/>
 
-    <footer>
-      <p>Footer</p>
-    </footer>
+        Why do we use it?<br/>
+        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).<br/><br/><br/>
 
-    <script>
-        function delete_post(id)
-        {
-            if ( window.confirm("Are you sure to delete Post ID:" + id) ) {
 
-                fetch('/posts?id=' + id, {
-                    method: 'DELETE',
-                })
-                    .then(res => res.text()) // or res.json()
-                    .then(res => console.log(res))
-            }
-            // Do something;
-            window.location.reload()
+        Where does it come from?<br/>
+        Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.<br/><br/><br/>
+
+        The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.<br/>
+
+        Where can I get some?<br/>
+        There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.<br/><br/><br/>
+    </article>
+
+</section>
+
+<footer>
+    <small class="copyright">designed with <i class="fa fa-heart" style="color: #fb866a;"></i> by <a
+            href="https://tonnytg.com.br" target="_blank">Antonio Thomacelli</a> for developers</small>
+</footer>
+
+<script>
+    function delete_post(id) {
+        if (window.confirm("Are you sure to delete Post ID:" + id)) {
+
+            fetch('/posts?id=' + id, {
+                method: 'DELETE',
+            })
+                .then(res => res.text()) // or res.json()
+                .then(res => console.log(res))
         }
-    </script>
+        // Do something;
+        window.location.reload()
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 
-    </body>
-    </html>
+</body>
+</html>
 {{ end }}
