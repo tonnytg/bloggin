@@ -5,6 +5,7 @@
       <title>CSS Template</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <style>
         * {
           box-sizing: border-box;
@@ -87,7 +88,9 @@
         <ul>
         <p>Articles:</p>
           {{ range .Articles }}
-          <li><a href="#{{ .ID }}" onclick="delete_post({{ .ID }});">{{ .Text }}</a></li>
+          <li><a href="#{{ .ID }}" onclick="">{{ .Text }}</a>
+              <a href="#{{ .ID }}" onclick="delete_post({{ .ID }});"><i class="fa fa-trash-o" style="font-size:16px"></i></a>
+          </li>
           {{ end }}
         </ul>
 
@@ -106,12 +109,14 @@
     <script>
         function delete_post(id)
         {
-            alert('deleting post' + id);
-            fetch('/posts?id=' + id, {
-                method: 'DELETE',
-            })
-                .then(res => res.text()) // or res.json()
-                .then(res => console.log(res))
+            if ( window.confirm("Are you sure to delete Post ID:" + id) ) {
+
+                fetch('/posts?id=' + id, {
+                    method: 'DELETE',
+                })
+                    .then(res => res.text()) // or res.json()
+                    .then(res => console.log(res))
+            }
             // Do something;
             window.location.reload()
         }
