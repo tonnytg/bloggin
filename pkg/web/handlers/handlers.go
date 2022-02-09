@@ -26,7 +26,7 @@ func RootHandler(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.tmpl", gin.H{
 			"Title":    "Empty",
 			"Text":     "Empty",
-			"Menu":     []string{"Home", "About", "Contact"},
+			"Menu":     []string{"Home","Articles", "About", "Contact"},
 			"Articles": articles,
 		})
 	}
@@ -34,14 +34,29 @@ func RootHandler(c *gin.Context) {
 	c.HTML(http.StatusOK, "index.tmpl", gin.H{
 		"Title":    articles[0].Title,
 		"Text":     articles[0].Text,
-		"Menu":     []string{"Home", "About", "Contact"},
+		"Menu":     []string{"Home","Articles", "About", "Contact"},
 		"Articles": articles,
 	})
 }
 
 func AdminHandler(c *gin.Context) {
+
+	articles := database.GetAllArticles()
+
+	if articles == nil {
+		c.HTML(http.StatusOK, "admin.tmpl", gin.H{
+			"Title":    "Empty",
+			"Text":     "Empty",
+			"Menu":     []string{"Home","Articles", "About", "Contact"},
+			"Articles": articles,
+		})
+	}
+
 	c.HTML(http.StatusOK, "admin.tmpl", gin.H{
-		"Title": "admin",
+		"Title":    articles[0].Title,
+		"Text":     articles[0].Text,
+		"Menu":     []string{"Home","Articles", "About", "Contact"},
+		"Articles": articles,
 	})
 }
 

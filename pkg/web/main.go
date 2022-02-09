@@ -3,6 +3,7 @@ package webserver
 import (
 	"bloggin/pkg/web/routes"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 // StartServer load gin server with routes, templates and handlers
@@ -16,6 +17,7 @@ func StartServer() {
 	r := gin.Default()
 
 	// Charge templates folder
+	r.StaticFS("/public", http.Dir("./pkg/web/public"))
 	r.LoadHTMLGlob("./pkg/web/templates/**")
 
 	// Load Routes with same gin process
