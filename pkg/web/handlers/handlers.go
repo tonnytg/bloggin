@@ -4,6 +4,7 @@ package handlers
 import (
 	"bloggin/entity/post"
 	"bloggin/pkg/database"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"net/url"
@@ -18,25 +19,33 @@ type StructB struct {
 	FieldB       string `form:"field_b"`
 }
 
+var  (
+	Menu = []string{"home","articles", "about", "contact", "admin"}
+)
+
 func RootHandler(c *gin.Context) {
 
 	articles := database.GetAllArticles()
 
-	if articles == nil {
+	fmt.Println("valor", len(articles))
+
+	if len(articles) <= 0 {
 		c.HTML(http.StatusOK, "index.tmpl", gin.H{
 			"Title":    "Empty",
 			"Text":     "Empty",
-			"Menu":     []string{"Home","Articles", "About", "Contact"},
+			"Menu":     Menu,
+			"Articles": articles,
+		})
+	} else {
+		c.HTML(http.StatusOK, "index.tmpl", gin.H{
+			"Title":    articles[0].Title,
+			"Text":     articles[0].Text,
+			"Menu":     Menu,
 			"Articles": articles,
 		})
 	}
 
-	c.HTML(http.StatusOK, "index.tmpl", gin.H{
-		"Title":    articles[0].Title,
-		"Text":     articles[0].Text,
-		"Menu":     []string{"Home","Articles", "About", "Contact"},
-		"Articles": articles,
-	})
+
 }
 
 func AdminHandler(c *gin.Context) {
@@ -47,7 +56,7 @@ func AdminHandler(c *gin.Context) {
 		c.HTML(http.StatusOK, "admin.tmpl", gin.H{
 			"Title":    "Empty",
 			"Text":     "Empty",
-			"Menu":     []string{"Home","Articles", "About", "Contact"},
+			"Menu":     Menu,
 			"Articles": articles,
 		})
 	}
@@ -55,7 +64,7 @@ func AdminHandler(c *gin.Context) {
 	c.HTML(http.StatusOK, "admin.tmpl", gin.H{
 		"Title":    articles[0].Title,
 		"Text":     articles[0].Text,
-		"Menu":     []string{"Home","Articles", "About", "Contact"},
+		"Menu":     Menu,
 		"Articles": articles,
 	})
 }

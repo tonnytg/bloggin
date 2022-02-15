@@ -13,6 +13,7 @@ func Routes(r *gin.Engine) {
 
 	// Pages
 	r.GET("/", handlers.RootHandler)
+	r.GET("/home", handlers.RootHandler)
 	r.GET("/admin", handlers.AdminHandler)
 
 	// API
