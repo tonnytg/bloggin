@@ -9,7 +9,7 @@
 *.dylib
 *.conf
 *.env
-conf.json
+config/database.json
 *.json
 
 # Test binary, built with `go test -c`

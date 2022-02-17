@@ -57,9 +57,7 @@ func DeletePost(id string) {
 func GetAllArticles() []models.Post {
 	db := InitDatabase()
 	var posts []models.Post
+	fmt.Println("array:", len(posts))
 	db.Find(&posts)
-	if len(posts) == 0 {
-		return nil
-	}
 	return posts
 }
