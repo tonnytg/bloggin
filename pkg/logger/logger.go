@@ -1,14 +1,29 @@
 package logger
 
 import (
-"fmt"
-"log"
-"os"
+	"fmt"
+	"log"
+	"os"
 )
 
-// Msg Message Log module for logs.
-// to use this log.Msg("CRITICAL", "cannot create db")
+func shouldLog(level string) bool {
+	currentLevel := os.Getenv("LOG_LEVEL")
+	switch currentLevel {
+	case "DEBUG":
+		return true
+	case "INFO":
+		return level == "INFO" || level == "ERROR"
+	case "ERROR":
+		return level == "ERROR"
+	default:
+		return false
+	}
+}
+
 func Msg(ErrType, Msg string) {
+	if !shouldLog(ErrType) {
+		return
+	}
 
 	// set file name do you want to log
 	filename := "activity.log"
