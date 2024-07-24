@@ -2,6 +2,8 @@
 FROM golang
 WORKDIR /var/app
 COPY . .
-RUN go build -o /var/app/bloggin
 
-CMD ["tail", "-f", "/dev/nul"]
+RUN go mod tidy
+RUN go build -o bloggin .
+
+CMD ["./bloggin"]
