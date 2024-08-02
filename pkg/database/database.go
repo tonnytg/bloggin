@@ -5,7 +5,11 @@ import (
 	"bloggin/pkg/database/migrations"
 	"bloggin/pkg/database/models"
 	"bloggin/pkg/logger"
+	"database/sql"
 	"fmt"
+	"log"
+
+	_ "github.com/lib/pq" // Import pq driver
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -14,16 +18,15 @@ var DB *gorm.DB
 
 // InitDatabase initializes the database connection
 func InitDatabase() *gorm.DB {
-
-	// Set configuration of database
 	cf := Config()
+	createDBIfNotExist(cf)
+
 	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		cf.Host, cf.Port, cf.User, cf.Password, cf.Name, cf.SSLMode)
 
 	// Connect to database and check connection errors
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-
 		// Save error to log
 		msg := fmt.Sprintf("Error connecting to database: %s", err.Error())
 		logger.Msg("ERROR", msg)
@@ -34,8 +37,23 @@ func InitDatabase() *gorm.DB {
 	return db
 }
 
-func SavePost(p *post.Post) {
+func createDBIfNotExist(cf *DBConfg) {
+	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s sslmode=%s",
+		cf.Host, cf.Port, cf.User, cf.Password, cf.SSLMode)
 
+	db, err := sql.Open("postgres", dsn)
+	if err != nil {
+		log.Fatalf("Error connecting to PostgreSQL: %s", err)
+	}
+	defer db.Close()
+
+	_, err = db.Exec(fmt.Sprintf("CREATE DATABASE %s", cf.Name))
+	if err != nil && err.Error() != fmt.Sprintf("pq: database \"%s\" already exists", cf.Name) {
+		log.Fatalf("Error creating database: %s", err)
+	}
+}
+
+func SavePost(p *post.Post) {
 	db := InitDatabase()
 	mp := models.Post{
 		Title: p.Title,
@@ -47,7 +65,6 @@ func SavePost(p *post.Post) {
 }
 
 func DeletePost(id string) {
-
 	var post models.Post
 	db := InitDatabase()
 

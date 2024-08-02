@@ -5,6 +5,7 @@ import (
 	"bloggin/pkg/database"
 	"bloggin/pkg/logger"
 	webserver "bloggin/pkg/web"
+	"os"
 )
 
 func init() {
@@ -13,6 +14,12 @@ func init() {
 }
 
 func main() {
+	// Set log level from environment variable, default to INFO
+	logLevel := os.Getenv("LOG_LEVEL")
+	if logLevel == "" {
+		logLevel = "INFO"
+	}
+	os.Setenv("LOG_LEVEL", logLevel)
 
 	// Check cmd
 	cmd.Flags()
