@@ -5,9 +5,10 @@ import (
 	"bloggin/entity/post"
 	"bloggin/pkg/database"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"net/url"
+
+	"github.com/gin-gonic/gin"
 )
 
 type StructA struct {
@@ -19,8 +20,8 @@ type StructB struct {
 	FieldB       string `form:"field_b"`
 }
 
-var  (
-	Menu = []string{"home","articles", "about", "contact", "admin"}
+var (
+	Menu = []string{"home", "articles", "about", "contact", "admin"}
 )
 
 func RootHandler(c *gin.Context) {
@@ -45,28 +46,23 @@ func RootHandler(c *gin.Context) {
 		})
 	}
 
-
 }
 
 func AdminHandler(c *gin.Context) {
-
 	articles := database.GetAllArticles()
 
-	if articles == nil {
-		c.HTML(http.StatusOK, "admin.tmpl", gin.H{
-			"Title":    "Empty",
-			"Text":     "Empty",
-			"Menu":     Menu,
-			"Articles": articles,
-		})
-	}
-
-	c.HTML(http.StatusOK, "admin.tmpl", gin.H{
-		"Title":    articles[0].Title,
-		"Text":     articles[0].Text,
+	data := gin.H{
+		"Title":    "Admin Panel",
 		"Menu":     Menu,
 		"Articles": articles,
-	})
+	}
+
+	if articles == nil {
+		data["Title"] = "No Articles"
+		data["Text"] = "No articles available."
+	}
+
+	c.HTML(http.StatusOK, "admin.tmpl", data)
 }
 
 func PostHandler(c *gin.Context) {
@@ -82,7 +78,7 @@ func PostHandler(c *gin.Context) {
 	database.SavePost(&article)
 	c.JSON(http.StatusOK, gin.H{"message": "ok"})
 
-	location := url.URL{Path: "/",}
+	location := url.URL{Path: "/"}
 	c.Redirect(http.StatusFound, location.RequestURI())
 
 	//c.HTML(http.StatusOK, "index.tmpl", gin.H{})

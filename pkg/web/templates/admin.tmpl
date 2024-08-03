@@ -1,3 +1,18 @@
+{{ define "Header" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ .Title }}</title>
+</head>
+<body>
+{{ end }}
+
+{{ define "Footer" }}
+</body>
+</html>
+{{ end }}
+
 {{ template "Header" . }}
 <header>
     <h1>Blog with Gin</h1>
@@ -5,7 +20,7 @@
 
 <nav>
     {{ range .Menu }}
-    <a href="{{ . }}">{{ . }}</a></li>
+    <a href="{{ . }}">{{ . }}</a>
     {{ end }}
 </nav>
 
@@ -14,24 +29,27 @@
         <ul>
             <p>Articles:</p>
             {{ range .Articles }}
-            <li><a href="#{{ .ID }}" onclick="">{{ .Title }}</a>
+            <li>
+                <a href="#{{ .ID }}">{{ .Title }}</a>
                 <a href="#{{ .ID }}" onclick="delete_post({{ .ID }});">
-                    <i class="fa fa-trash-o" style="font-size:16px"></i></a>
+                    <i class="fa fa-trash-o" style="font-size:16px"></i>
+                </a>
             </li>
             {{ end }}
         </ul>
     </div>
 </aside>
 
-    <section>
-      <article>
-          <form action="/admin/post" method="post" id="id">
-              <label for="name">Name:</label>
-              <input type="text" id="name" name="name" value="Type your name"><br>
-              <label for="message">Message:</label><br>
-              <textarea id="message" name="message" rows="5" cols="50" wrap="physical" name="comments"></textarea><br><br>
-              <input type="submit" value="Submit">
-          </form>
-      </article>
-    </section>
+<section>
+    <article>
+        <form action="/admin/post" method="post" id="id">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" value="Type your name"><br>
+            <label for="message">Message:</label><br>
+            <textarea id="message" name="message" rows="5" cols="50" wrap="physical"></textarea><br><br>
+            <input type="submit" value="Submit">
+        </form>
+    </article>
+</section>
+
 {{ template "Footer" }}
