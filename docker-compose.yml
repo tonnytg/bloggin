@@ -1,5 +1,4 @@
 version: "3"
-
 services:
   app:
     build: .
@@ -7,7 +6,10 @@ services:
       - "8080:8080"
     depends_on:
       - db
-
+      - otel-collector
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4317"  # Endpoint do OpenTelemetry Collector
+  
   db:
     image: postgres:9.6
     ports:
@@ -18,3 +20,14 @@ services:
       POSTGRES_DB: postgres
     volumes:
       - ./db:/var/lib/postgresql/data
+
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    command: ["--config=/etc/otel-collector-config.yml"]
+    volumes:
+      - ./config/otel-collector-config.yml:/etc/otel-collector-config.yml
+    ports:
+      - "4317:4317"  # Porta para receber traces/métricas do OTLP
+      - "55681:55681"  # Porta para gRPC (se necessário)
+      - "8888:8888"  # Porta para HTTP (se necessário)
+
