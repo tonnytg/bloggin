@@ -1,10 +1,10 @@
 package main
 
 import (
-	"bloggin/pkg/cmd"
-	"bloggin/pkg/database"
-	"bloggin/pkg/logger"
-	webserver "bloggin/pkg/web"
+	"bloggin/cmd"
+	"bloggin/config/logger"
+	"bloggin/internal/infra/database"
+	"bloggin/internal/infra/web"
 	"os"
 )
 
