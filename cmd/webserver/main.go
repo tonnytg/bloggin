@@ -1,4 +1,4 @@
-package cmd
+package webserver
 
 import (
 	"bloggin/config/logger"
