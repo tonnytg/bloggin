@@ -1,15 +1,26 @@
-package webserver
+package main
 
 import (
 	"bloggin/config/logger"
-	"flag"
+	"bloggin/internal/infra/database"
+	"bloggin/internal/infra/web"
+	"os"
 )
 
-func Flags() {
-	server := flag.String("server", "passive", "--server passive")
-	flag.Parse()
+func init() {
+	// Database init
+	database.InitDatabase()
+}
 
-	if *server != "passive" {
-		logger.Msg("WARNING", "Server Mode: "+*server)
+func main() {
+	// Set log level from environment variable, default to INFO
+	logLevel := os.Getenv("LOG_LEVEL")
+	if logLevel == "" {
+		logLevel = "INFO"
 	}
+	os.Setenv("LOG_LEVEL", logLevel)
+
+	// Start Web server GIN
+	logger.Msg("INFO", "Starting server...")
+	webserver.StartServer()
 }

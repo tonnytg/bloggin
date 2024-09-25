@@ -47,9 +47,23 @@ func createDBIfNotExist(cf *DBConfg) {
 	}
 	defer db.Close()
 
-	_, err = db.Exec(fmt.Sprintf("CREATE DATABASE %s", cf.Name))
-	if err != nil && err.Error() != fmt.Sprintf("pq: database \"%s\" already exists", cf.Name) {
-		log.Fatalf("Error creating database: %s", err)
+	// Verificar se o banco de dados já existe
+	var exists bool
+	checkQuery := fmt.Sprintf("SELECT EXISTS(SELECT 1 FROM pg_database WHERE datname = '%s')", cf.Name)
+	err = db.QueryRow(checkQuery).Scan(&exists)
+	if err != nil {
+		log.Fatalf("Error checking database existence: %s", err)
+	}
+
+	if exists {
+		fmt.Printf("Database %s already exists, skipping creation.\n", cf.Name)
+	} else {
+		// Tentativa de criação do banco de dados
+		_, err = db.Exec(fmt.Sprintf("CREATE DATABASE %s", cf.Name))
+		if err != nil {
+			log.Fatalf("Error creating database: %s", err)
+		}
+		fmt.Printf("Database %s created successfully.\n", cf.Name)
 	}
 }
 

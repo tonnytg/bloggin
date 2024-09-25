@@ -4,6 +4,6 @@ WORKDIR /var/app
 COPY . .
 
 RUN go mod tidy
-RUN go build -o bloggin .
+RUN go build -o bloggin cmd/webserver/main.go
 
 CMD ["./bloggin"]
